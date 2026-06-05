@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ drink.name }}{% endblock %}
+{% block content %}
+<h1>Edit Drink</h1>
+<div class="card">
+  <form method="post" action="{{ url_for('Drinks.update', id=drink.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.name.label }} {{ form.name() }}</div>
+      <div class="field">{{ form.category.label }} {{ form.category() }}</div>
+    </div>
+    <div class="grid2">
+      <div class="field">{{ form.price_dkk.label }} {{ form.price_dkk() }}</div>
+      <div class="field">{{ form.unit.label }} {{ form.unit() }}</div>
+    </div>
+    <div class="actions">
+      {{ form.submit(class="btn") }}
+      <a class="btn secondary" href="{{ url_for('Drinks.index') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ volunteer.name }}{% endblock %}
+{% block content %}
+<h1>Edit Volunteer</h1>
+<div class="card">
+  <form method="post" action="{{ url_for('Volunteers.update', id=volunteer.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.name.label }} {{ form.name() }}
+        {% for e in form.name.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+      <div class="field">{{ form.email.label }} {{ form.email() }}
+        {% for e in form.email.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+    </div>
+    <div class="field">{{ form.phone.label }} {{ form.phone() }}
+      <small class="hint">Danish mobile, 8 digits, optional +45 or 0045 prefix.</small>
+      {% for e in form.phone.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+    <div class="actions">
+      {{ form.submit(class="btn") }}
+      <a class="btn secondary" href="{{ url_for('Volunteers.detail', id=volunteer.id) }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

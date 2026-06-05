@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Edit Shift{% endblock %}
+{% block content %}
+<h1>Edit Shift</h1>
+<div class="card">
+  <form method="post" action="{{ url_for('Shifts.update', id=shift.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.event_id.label }} {{ form.event_id() }}</div>
+      <div class="field">{{ form.role.label }} {{ form.role() }}</div>
+    </div>
+    <div class="grid2">
+      <div class="field">{{ form.start_time.label }} {{ form.start_time(placeholder="DD-MM-YYYY HH:MM") }}
+        <small class="hint">Format: DD-MM-YYYY HH:MM</small></div>
+      <div class="field">{{ form.end_time.label }} {{ form.end_time(placeholder="DD-MM-YYYY HH:MM") }}
+        <small class="hint">Format: DD-MM-YYYY HH:MM</small></div>
+    </div>
+    <div class="field">{{ form.capacity.label }} {{ form.capacity() }}</div>
+    <div class="actions">
+      {{ form.submit(class="btn") }}
+      <a class="btn secondary" href="{{ url_for('Shifts.detail', id=shift.id) }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

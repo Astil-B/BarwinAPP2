@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+<h1>Sign up</h1>
+<div class="card auth-card">
+  <form method="post" action="{{ url_for('Login.signup') }}">
+    {{ form.hidden_tag() }}
+    {% for f in [form.full_name, form.username, form.password, form.password_repeat, form.user_type] %}
+    <div class="field">
+      {{ f.label }} {{ f() }}
+      {% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}
+    </div>
+    {% endfor %}
+    {{ form.submit(class="btn") }}
+  </form>
+  <p class="muted" style="margin-top:1rem;">
+    Already have an account? <a class="link" href="{{ url_for('Login.login') }}">Log in</a>.
+  </p>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ event.name }}{% endblock %}
+{% block content %}
+<div class="actions" style="justify-content:space-between;">
+  <h1 style="margin:0;">{{ event.name }}</h1>
+  {% if current_user.role == 'manager' %}
+  <div class="actions">
+    <a class="btn sm secondary" href="{{ url_for('Events.edit', id=event.id) }}">Edit</a>
+    <form class="inline" method="post" action="{{ url_for('Events.delete', id=event.id) }}"
+          onsubmit="return confirm('Delete this event?')">
+      <button class="btn sm danger" type="submit">Delete</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+<dl class="detail">
+  <dt>Date</dt><dd>{{ event.date }}</dd>
+  <dt>Location</dt><dd>{{ event.location or '—' }}</dd>
+  <dt>Description</dt><dd>{{ event.description or '—' }}</dd>
+</dl>
+
+<h2>Shifts
+  {% if current_user.role == 'manager' %}
+  <a class="btn sm" href="{{ url_for('Shifts.index', event_id=event.id) }}">+ Add Shift</a>
+  {% endif %}
+</h2>
+{% if shifts %}
+<table>
+  <thead><tr><th>Role</th><th>Start</th><th>End</th><th>Capacity</th><th>Confirmed</th></tr></thead>
+  <tbody>
+    {% for shift in shifts %}
+    <tr>
+      <td><a class="link" href="{{ url_for('Shifts.detail', id=shift.id) }}">{{ shift.role }}</a></td>
+      <td>{{ shift.start_time.strftime('%d-%m-%Y %H:%M') }}</td>
+      <td>{{ shift.end_time.strftime('%H:%M') }}</td>
+      <td>{{ shift.capacity }}</td>
+      <td>{{ shift.confirmed_count }} / {{ shift.capacity }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No shifts yet.</p>
+{% endif %}
+
+<h2>Sales Summary
+  <a class="btn sm secondary" href="{{ url_for('Sales.summary', event_id=event.id) }}">Full Report</a>
+</h2>
+{% if summary %}
+<table>
+  <thead><tr><th>Drink</th><th>Qty Sold</th><th>Revenue (DKK)</th></tr></thead>
+  <tbody>
+    {% for row in summary %}
+    <tr><td>{{ row.drink_name }}</td><td>{{ row.total_qty }}</td><td>{{ '%.2f' | format(row.total_revenue) }}</td></tr>
+    {% endfor %}
+    <tr>
+      <td><strong>Total</strong></td>
+      <td><strong>{{ summary | sum(attribute='total_qty') }}</strong></td>
+      <td><strong>{{ '%.2f' | format(summary | sum(attribute='total_revenue')) }}</strong></td>
+    </tr>
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No sales recorded for this event.</p>
+{% endif %}
+{% endblock %}

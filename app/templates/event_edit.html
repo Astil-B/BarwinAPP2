@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Edit {{ event.name }}{% endblock %}
+{% block content %}
+<h1>Edit Event</h1>
+<div class="card">
+  <form method="post" action="{{ url_for('Events.update', id=event.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.name.label }} {{ form.name() }}
+        {% for e in form.name.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+      <div class="field">{{ form.date.label }} {{ form.date(placeholder="YYYY-MM-DD") }}
+        <small class="hint">Format: YYYY-MM-DD</small>
+        {% for e in form.date.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+    </div>
+    <div class="field">{{ form.location.label }} {{ form.location() }}</div>
+    <div class="field">{{ form.description.label }} {{ form.description(rows=2) }}</div>
+    <div class="actions">
+      {{ form.submit(class="btn") }}
+      <a class="btn secondary" href="{{ url_for('Events.detail', id=event.id) }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

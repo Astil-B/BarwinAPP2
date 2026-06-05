@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Shifts{% endblock %}
+{% block content %}
+<h1>Shifts</h1>
+
+{% if current_user.role == 'manager' %}
+<div class="card">
+  <h2 style="margin-top:0;border:0;">New Shift</h2>
+  <form method="post" action="{{ url_for('Shifts.create') }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.event_id.label }} {{ form.event_id() }}</div>
+      <div class="field">{{ form.role.label }} {{ form.role() }}</div>
+    </div>
+    <div class="grid2">
+      <div class="field">{{ form.start_time.label }} {{ form.start_time(placeholder="DD-MM-YYYY HH:MM") }}
+        <small class="hint">Format: DD-MM-YYYY HH:MM</small></div>
+      <div class="field">{{ form.end_time.label }} {{ form.end_time(placeholder="DD-MM-YYYY HH:MM") }}
+        <small class="hint">Format: DD-MM-YYYY HH:MM</small></div>
+    </div>
+    <div class="field">{{ form.capacity.label }} {{ form.capacity() }}</div>
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+{% endif %}
+
+<h2>
+  {% if selected_event_id %}Shifts for selected event{% else %}All Shifts{% endif %}
+  {% if selected_event_id %}<a class="btn sm secondary" href="{{ url_for('Shifts.index') }}">Show all</a>{% endif %}
+</h2>
+{% if shifts %}
+<table>
+  <thead><tr><th>Role</th><th>Event</th><th>Start</th><th>End</th><th>Confirmed</th>{% if current_user.role == 'manager' %}<th></th>{% endif %}</tr></thead>
+  <tbody>
+    {% for shift in shifts %}
+    <tr>
+      <td><a class="link" href="{{ url_for('Shifts.detail', id=shift.id) }}">{{ shift.role }}</a></td>
+      <td><a class="link" href="{{ url_for('Events.detail', id=shift.event_id) }}">{{ shift.event_name }}</a></td>
+      <td>{{ shift.start_time.strftime('%d-%m-%Y %H:%M') }}</td>
+      <td>{{ shift.end_time.strftime('%H:%M') }}</td>
+      <td>{{ shift.confirmed_count }} / {{ shift.capacity }}</td>
+      {% if current_user.role == 'manager' %}
+      <td class="actions">
+        <a class="btn sm secondary" href="{{ url_for('Shifts.edit', id=shift.id) }}">Edit</a>
+        <form class="inline" method="post" action="{{ url_for('Shifts.delete', id=shift.id) }}"
+              onsubmit="return confirm('Delete this shift?')">
+          <button class="btn sm danger" type="submit">Delete</button>
+        </form>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No shifts.</p>
+{% endif %}
+{% endblock %}

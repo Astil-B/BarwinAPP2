@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}BarwinAPP2{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+  <nav>
+    <a class="brand" href="{{ url_for('Login.home') }}">🍻 BarwinAPP2</a>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('Events.index') }}">Events</a>
+      <a href="{{ url_for('Shifts.index') }}">Shifts</a>
+      <a href="{{ url_for('Volunteers.index') }}">Volunteers</a>
+      <a href="{{ url_for('Drinks.index') }}">Drinks</a>
+      <a href="{{ url_for('Sales.index') }}">Sales</a>
+      <span class="spacer"></span>
+      <span class="who">{{ current_user.full_name }} ({{ current_user.role }})</span>
+      <a href="{{ url_for('Login.logout') }}">Log out</a>
+    {% else %}
+      <span class="spacer"></span>
+      <a href="{{ url_for('Login.login') }}">Log in</a>
+      <a href="{{ url_for('Login.signup') }}">Sign up</a>
+    {% endif %}
+  </nav>
+  <main>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+      <div class="flashes">
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

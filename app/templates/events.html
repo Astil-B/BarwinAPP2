@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Events{% endblock %}
+{% block content %}
+<h1>Events</h1>
+
+{% if current_user.role == 'manager' %}
+<div class="card">
+  <h2 style="margin-top:0;border:0;">New Event</h2>
+  <form method="post" action="{{ url_for('Events.create') }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.name.label }} {{ form.name() }}</div>
+      <div class="field">{{ form.date.label }} {{ form.date(placeholder="YYYY-MM-DD") }}
+        <small class="hint">Format: YYYY-MM-DD</small></div>
+    </div>
+    <div class="field">{{ form.location.label }} {{ form.location() }}</div>
+    <div class="field">{{ form.description.label }} {{ form.description(rows=2) }}</div>
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+{% endif %}
+
+<h2>All Events</h2>
+{% if events %}
+<table>
+  <thead><tr><th>Name</th><th>Date</th><th>Location</th>{% if current_user.role == 'manager' %}<th></th>{% endif %}</tr></thead>
+  <tbody>
+    {% for event in events %}
+    <tr>
+      <td><a class="link" href="{{ url_for('Events.detail', id=event.id) }}">{{ event.name }}</a></td>
+      <td>{{ event.date }}</td>
+      <td>{{ event.location or '—' }}</td>
+      {% if current_user.role == 'manager' %}
+      <td class="actions">
+        <a class="btn sm secondary" href="{{ url_for('Events.edit', id=event.id) }}">Edit</a>
+        <form class="inline" method="post" action="{{ url_for('Events.delete', id=event.id) }}"
+              onsubmit="return confirm('Delete this event (and its shifts and sales)?')">
+          <button class="btn sm danger" type="submit">Delete</button>
+        </form>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No events yet.</p>
+{% endif %}
+{% endblock %}

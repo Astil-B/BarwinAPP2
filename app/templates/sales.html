@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Sales{% endblock %}
+{% block content %}
+<h1>Sales</h1>
+
+{% if current_user.role == 'manager' %}
+<div class="card">
+  <h2 style="margin-top:0;border:0;">Record Sale</h2>
+  <form method="post" action="{{ url_for('Sales.create') }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.event_id.label }} {{ form.event_id() }}</div>
+      <div class="field">{{ form.drink_id.label }} {{ form.drink_id() }}</div>
+    </div>
+    <div class="grid2">
+      <div class="field">{{ form.volunteer_id.label }} {{ form.volunteer_id() }}</div>
+      <div class="field">{{ form.quantity.label }} {{ form.quantity() }}</div>
+    </div>
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+{% endif %}
+
+<h2>Filter by event</h2>
+<form method="get" action="{{ url_for('Sales.index') }}" class="actions">
+  <select name="event_id" style="max-width:320px;">
+    <option value="">All events</option>
+    {% for e in events %}
+    <option value="{{ e.id }}" {% if selected_event_id == e.id %}selected{% endif %}>{{ e.name }} ({{ e.date }})</option>
+    {% endfor %}
+  </select>
+  <button class="btn secondary" type="submit">Apply</button>
+</form>
+
+{% if summary %}
+<h2>Summary for selected event</h2>
+<table>
+  <thead><tr><th>Drink</th><th>Qty Sold</th><th>Revenue (DKK)</th></tr></thead>
+  <tbody>
+    {% for row in summary %}
+    <tr><td>{{ row.drink_name }}</td><td>{{ row.total_qty }}</td><td>{{ '%.2f' | format(row.total_revenue) }}</td></tr>
+    {% endfor %}
+    <tr>
+      <td><strong>Total</strong></td>
+      <td><strong>{{ summary | sum(attribute='total_qty') }}</strong></td>
+      <td><strong>{{ '%.2f' | format(summary | sum(attribute='total_revenue')) }}</strong></td>
+    </tr>
+  </tbody>
+</table>
+{% endif %}
+
+<h2>{% if selected_event_id %}Sales for selected event{% else %}All Sales{% endif %}</h2>
+{% if sales %}
+<table>
+  <thead><tr><th>Drink</th><th>Event</th><th>Sold by</th><th>Qty</th><th>When</th>{% if current_user.role == 'manager' %}<th></th>{% endif %}</tr></thead>
+  <tbody>
+    {% for sale in sales %}
+    <tr>
+      <td>{{ sale.drink_name }}</td>
+      <td>{{ sale.event_name }}</td>
+      <td>{{ sale.volunteer_name }}</td>
+      <td>{{ sale.quantity }}</td>
+      <td>{{ sale.sold_at.strftime('%d-%m-%Y %H:%M') if sale.sold_at else '—' }}</td>
+      {% if current_user.role == 'manager' %}
+      <td>
+        <form class="inline" method="post" action="{{ url_for('Sales.delete', id=sale.id) }}"
+              onsubmit="return confirm('Delete this sale?')">
+          <button class="btn sm danger" type="submit">Delete</button>
+        </form>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No sales recorded.</p>
+{% endif %}
+{% endblock %}

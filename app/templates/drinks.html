@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Drinks{% endblock %}
+{% block content %}
+<h1>Drinks</h1>
+
+{% if current_user.role == 'manager' %}
+<div class="card">
+  <h2 style="margin-top:0;border:0;">New Drink</h2>
+  <form method="post" action="{{ url_for('Drinks.create') }}">
+    {{ form.hidden_tag() }}
+    <div class="grid2">
+      <div class="field">{{ form.name.label }} {{ form.name() }}</div>
+      <div class="field">{{ form.category.label }} {{ form.category() }}</div>
+    </div>
+    <div class="grid2">
+      <div class="field">{{ form.price_dkk.label }} {{ form.price_dkk() }}</div>
+      <div class="field">{{ form.unit.label }} {{ form.unit(placeholder="e.g. 0.33L, glass") }}</div>
+    </div>
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+{% endif %}
+
+{% if grouped %}
+  {% for category, drinks in grouped.items() %}
+  <h2>{{ category | capitalize }}</h2>
+  <table>
+    <thead><tr><th>Name</th><th>Price (DKK)</th><th>Unit</th>{% if current_user.role == 'manager' %}<th></th>{% endif %}</tr></thead>
+    <tbody>
+      {% for d in drinks %}
+      <tr>
+        <td>{{ d.name }}</td>
+        <td>{{ '%.2f' | format(d.price_dkk) }}</td>
+        <td>{{ d.unit or '—' }}</td>
+        {% if current_user.role == 'manager' %}
+        <td class="actions">
+          <a class="btn sm secondary" href="{{ url_for('Drinks.edit', id=d.id) }}">Edit</a>
+          <form class="inline" method="post" action="{{ url_for('Drinks.delete', id=d.id) }}"
+                onsubmit="return confirm('Delete this drink?')">
+            <button class="btn sm danger" type="submit">Delete</button>
+          </form>
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+{% else %}
+<p class="empty">No drinks yet.</p>
+{% endif %}
+{% endblock %}

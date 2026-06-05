@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}500 — Server Error{% endblock %}
+{% block content %}
+<h1>500 — Server Error</h1>
+<p class="muted">Something went wrong on our end.</p>
+<p><a class="link" href="{{ url_for('Login.home') }}">← Back to home</a></p>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}BarwinAPP2 — Home{% endblock %}
+{% block content %}
+<h1>Barwin Event Manager</h1>
+<p class="muted">Manage Friday bar events, volunteer shifts, drinks and sales.</p>
+
+<h2>Recent Events</h2>
+{% if events %}
+<table>
+  <thead><tr><th>Event</th><th>Date</th><th>Location</th></tr></thead>
+  <tbody>
+    {% for event in events %}
+    <tr>
+      <td><a class="link" href="{{ url_for('Events.detail', id=event.id) }}">{{ event.name }}</a></td>
+      <td>{{ event.date }}</td>
+      <td>{{ event.location or '—' }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No events yet.</p>
+{% endif %}
+{% endblock %}

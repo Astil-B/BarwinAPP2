@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  database:
+    image: 'postgres:latest'
+    container_name: barwin_database
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -t 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 'UIS'
+      POSTGRES_DB: barwin2
+
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./:/code
+    environment:
+      - PGPASSWORD=UIS
+      - SECRET_KEY=devsecret
+      - DB_NAME=barwin2
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=UIS
+      - DB_HOST=database
+    ports:
+      - "5000:5000"
+    links:
+      - database

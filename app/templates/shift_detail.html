@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ shift.role | capitalize }} Shift{% endblock %}
+{% block content %}
+<div class="actions" style="justify-content:space-between;">
+  <h1 style="margin:0;">{{ shift.role | capitalize }} Shift</h1>
+  {% if current_user.role == 'manager' %}
+  <div class="actions">
+    <a class="btn sm secondary" href="{{ url_for('Shifts.edit', id=shift.id) }}">Edit</a>
+    <form class="inline" method="post" action="{{ url_for('Shifts.delete', id=shift.id) }}"
+          onsubmit="return confirm('Delete this shift?')">
+      <button class="btn sm danger" type="submit">Delete</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+
+<dl class="detail">
+  <dt>Event</dt>
+  <dd><a class="link" href="{{ url_for('Events.detail', id=shift.event_id) }}">{{ shift.event_name }}</a></dd>
+  <dt>Start</dt><dd>{{ shift.start_time.strftime('%d-%m-%Y %H:%M') }}</dd>
+  <dt>End</dt><dd>{{ shift.end_time.strftime('%d-%m-%Y %H:%M') }}</dd>
+  <dt>Capacity</dt><dd>{{ shift.capacity }}</dd>
+</dl>
+
+<h2>Signups ({{ signups | length }} / {{ shift.capacity }})</h2>
+<p class="muted">{{ shift.slots_left }} of {{ shift.capacity }} confirmed slots left.</p>
+
+<div class="card">
+  <form method="post" action="{{ url_for('Shifts.signup', id=shift.id) }}" class="actions">
+    {{ form.hidden_tag() }}
+    <div class="field" style="flex:1;margin:0;">
+      {{ form.volunteer_id.label }} {{ form.volunteer_id() }}
+    </div>
+    {{ form.submit(class="btn") }}
+  </form>
+</div>
+
+{% if signups %}
+<table>
+  <thead><tr><th>Volunteer</th><th>Status</th></tr></thead>
+  <tbody>
+    {% for s in signups %}
+    <tr>
+      <td><a class="link" href="{{ url_for('Volunteers.detail', id=s.volunteer_id) }}">{{ s.volunteer_name }}</a></td>
+      <td><span class="badge badge-{{ s.status }}">{{ s.status }}</span></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No signups yet.</p>
+{% endif %}
+{% endblock %}

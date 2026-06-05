@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Log in{% endblock %}
+{% block content %}
+<h1>Log in</h1>
+<div class="card auth-card">
+  <form method="post" action="{{ url_for('Login.login') }}">
+    {{ form.hidden_tag() }}
+    <div class="field">
+      {{ form.username.label }} {{ form.username() }}
+      {% for e in form.username.errors %}<div class="err">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="field">
+      {{ form.password.label }} {{ form.password() }}
+      {% for e in form.password.errors %}<div class="err">{{ e }}</div>{% endfor %}
+    </div>
+    {{ form.submit(class="btn") }}
+  </form>
+  <p class="muted" style="margin-top:1rem;">
+    No account? <a class="link" href="{{ url_for('Login.signup') }}">Sign up</a>.<br>
+    Demo: <code>manager / pass</code> or <code>volunteer / pass</code>.
+  </p>
+</div>
+{% endblock %}
