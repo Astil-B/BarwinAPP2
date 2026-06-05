@@ -16,7 +16,7 @@ def flash_errors(form):
 
 
 def parse_dt(value):
-    """Parse a DD-MM-YYYY HH:MM string, returning (datetime, None) or (None, error)."""
+    """takes DD-MM-YYYY HH:MM string, returning (datetime, None) or (None, error)."""
     try:
         return datetime.strptime((value or "").strip(), DT_FORMAT), None
     except ValueError:
