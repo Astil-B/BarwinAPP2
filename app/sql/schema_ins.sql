@@ -1,12 +1,12 @@
 INSERT INTO event (name, date, location, description) VALUES
-    ('Friday Bar — Semester Kickoff', DATE '2026-06-05', 'Barwin', 'First bar of the summer term.'),
-    ('Friday Bar — Exam Relief',      DATE '2026-06-12', 'Barwin', 'Post-exam celebration night.');
+    ('Sommerfest i blok 4', DATE '2026-06-05', 'Barwin', 'Sidste fest for skoleåret'),
+    ('Galla for bioinformatik',      DATE '2026-06-12', 'Barwin', 'Kæmpe gallafest for bioinformatik');
 
 INSERT INTO volunteer (name, email, phone) VALUES
-    ('Alice Jensen',   'alice@barwin.dk', '+4520111213'),
-    ('Bob Nielsen',    'bob@barwin.dk',   '+4520222324'),
-    ('Clara Sørensen', 'clara@barwin.dk', '+4520333435'),
-    ('David Holm',     'david@barwin.dk', '+4520444546');
+    ('Ben Dover',   'Bend@barwin.dk', '+4520111213'),
+    ('Biggus Dickus',    'Biggus@barwin.dk',   '+4520222324'),
+    ('Mike Hunt ', 'Mike@barwin.dk', '+4520333435'),
+    ('Cook Po',     'Cook@barwin.dk', '+4520444546');
 
 INSERT INTO drink (name, category, price_dkk, unit) VALUES
     ('Tuborg Pilsner', 'beer',     25.00, '0.5L'),

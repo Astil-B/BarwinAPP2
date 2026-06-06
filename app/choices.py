@@ -1,9 +1,7 @@
 
 ROLE_CHOICES = [
     ("bartender", "Bartender"),
-    ("bouncer", "Bouncer"),
-    ("cashier", "Cashier"),
-    ("runner", "Runner"),
+    ("washer", "Washer"),
     ("manager", "Manager"),
 ]
 
