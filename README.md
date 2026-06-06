@@ -32,6 +32,10 @@ docker compose up --build
 App is served on http://localhost:5000. To stop it, press `Ctrl+C`
 (or `docker compose down` from another terminal).
 
+> Note: the container runs `init_db.py` on **every** start, which drops and
+> re-seeds the domain tables. Data you enter does not survive a restart of the
+> `web` container. (See the destructive-init note under [Notes](#notes).)
+
 ---
 
 ## Option B — Run locally (without Docker)
@@ -53,7 +57,7 @@ pip install -r requirements.txt
 # 3. Create the .env config from the template, then edit it (see below)
 cp .env.example .env
 
-# 4. Create the empty database
+# 4. Create the empty database (owned by the user you put in DB_USERNAME)
 createdb barwin2                   # or: psql -c "CREATE DATABASE barwin2;"
 
 # 5. Build the schema + seed data (REQUIRED — run.py will not do this)
@@ -65,7 +69,11 @@ python run.py                      # http://localhost:5000
 
 ### Configuring `.env`
 
-`cp .env.example .env`, then set the values to match your local PostgreSQL:
+The shipped `.env.example` holds the **Docker** defaults (`postgres` / `UIS` /
+`localhost`); a stock local PostgreSQL install usually does **not** have a
+`postgres` role with that password. After `cp .env.example .env`, edit the
+values to match your own local PostgreSQL — and make sure `DB_USERNAME` matches
+the user that owns the `barwin2` database from step 4:
 
 | Variable      | Meaning                                | Example                    |
 |---------------|----------------------------------------|----------------------------|
