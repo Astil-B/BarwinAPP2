@@ -9,7 +9,7 @@ load_dotenv()
 SQL_DIR = os.path.join(os.path.dirname(__file__), "sql")
 SCRIPTS = ["schema_drop.sql", "schema.sql", "views.sql", "schema_ins.sql"]
 
-# (username, full_name, plaintext, role)
+#(username, full_name, plaintext, role)
 DEFAULT_USERS = [
     ("manager", "Bar Manager", "pass", "manager"),
     ("volunteer", "Helpful Volunteer", "pass", "volunteer"),

@@ -34,10 +34,10 @@ login_manager = LoginManager(app)
 login_manager.login_view = "Login.login"
 login_manager.login_message_category = "info"
 
-# Importing models registers the Flask-Login user_loader.
+#registers the Flask-Login user_loader.
 from app import models  
 
-# Register blueprints.
+#blueprints.
 from app.blueprints.Login.routes import Login  
 from app.blueprints.Events.routes import Events  
 from app.blueprints.Shifts.routes import Shifts  

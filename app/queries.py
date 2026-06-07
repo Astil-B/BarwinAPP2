@@ -284,9 +284,9 @@ def insert_signup(shift_id, volunteer_id, status):
     cur.close()
 
 
-# --------------------------------------------------------------------- #
-# Drinks
-# --------------------------------------------------------------------- #
+
+#Drinks
+
 def get_all_drinks():
     cur = _cur()
     cur.execute("SELECT * FROM drink ORDER BY category, name")

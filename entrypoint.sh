@@ -1,5 +1,4 @@
 #!/bin/sh
-# Initialise the schema + seed data, then start the dev server.
 set -e
 
 echo "Initialising database schema..."

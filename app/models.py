@@ -16,7 +16,7 @@ def load_user(user_id):
 
 
 class ModelMixin(dict):
-    """Dict whose keys are also reachable as attributes (event.name)."""
+    """Dict whose keys are also attributes (event.name)."""
 
     def __getattr__(self, item):
         try:
