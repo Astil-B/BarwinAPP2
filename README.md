@@ -35,7 +35,7 @@ python run.py                      #http://localhost:5000
 
 ## Using the app
 
-Log in, then use the top navbar: **Events**, **Shifts**, **Volunteers**,
-**Drinks**, **Sales**. Click any row to see its detail page. Managers can
+Log in or create new user, then use the navigation bar that contains: Events, Shifts, Volunteers,
+Drinks, Sales. Click any row to see its detail page. Managers can
 add/edit/delete and record sales; volunteers can browse and sign up for shifts.
 </content>
