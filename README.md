@@ -32,4 +32,10 @@ python run.py                      # http://localhost:5000
 |-----------|----------|-----------|
 | manager   | pass     | manager   |
 | volunteer | pass     | volunteer |
+
+## Using the app
+
+Log in, then use the top navbar: **Events**, **Shifts**, **Volunteers**,
+**Drinks**, **Sales**. Click any row to see its detail page. Managers can
+add/edit/delete and record sales; volunteers can browse and sign up for shifts.
 </content>
